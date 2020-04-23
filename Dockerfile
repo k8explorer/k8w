@@ -1,0 +1,19 @@
+FROM docker.whatsapp.biz/web:v2.27.12
+
+COPY lighttpd /etc/init.d/lighttpd
+RUN  chmod 775 /opt/whatsapp/bin/launch_within_docker.sh
+
+RUN  mkdir -p /usr/local/waent /var/lib/whatsapp /var/log/lighttpd /var/run/lighttpd /usr/local/wamedia/
+RUN  touch /etc/wa_config.json
+RUN  touch /var/log/whatsapp/web.log
+RUN  chmod -Rf 775 /etc/wa_config.json /etc/lighttpd /etc/php /etc/init.d/lighttpd 
+RUN  chmod -Rf 775 /var/www /var/log /var/run /var/lib/whatsapp 
+RUN  chmod -Rf 775 /usr/local/waent 
+RUN  chmod -Rf 777 /usr/local/wamedia/ || exit 0
+RUN  chmod -Rf 777  / || exit 0
+RUN  chown -Rf 33:33 /usr/ || exit 0
+RUN  chown -Rf 33:33  / /var/log/lighttpd /var/www || exit 0
+RUN  setcap CAP_NET_BIND_SERVICE=+eip /usr/sbin/lighttpd 
+RUN  setcap 'cap_net_bind_service=+ep' /usr/sbin/lighttpd 
+
+
